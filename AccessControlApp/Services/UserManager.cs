@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AccessControlApp.Models;
+﻿using AccessControlApp.Models;
 
 namespace AccessControlApp.Access
 {
@@ -11,11 +6,10 @@ namespace AccessControlApp.Access
     {
         private List<User> users;
 
-        string usersFilePath = "../../../nameuser.txt";
+        const string usersFilePath = "../../../nameuser.txt";
 
         public void LoadUsers()
         {
-            // Зчитування користувачів з файлу nameuser.txt
             users = new List<User>();
 
             if (File.Exists(usersFilePath))
@@ -40,7 +34,6 @@ namespace AccessControlApp.Access
 
         public void SaveUsers()
         {
-            // Збереження користувачів у файл nameuser.txt
             List<string> userLines = new List<string>();
 
             foreach (var user in users)
@@ -53,7 +46,6 @@ namespace AccessControlApp.Access
 
         public void RegisterUser(string username, string password, string accessRights)
         {
-            // Реєстрація нового користувача
             users.Add(new User
             {
                 Username = username,
@@ -66,10 +58,8 @@ namespace AccessControlApp.Access
 
         public bool AuthenticateUser(string username, string password)
         {
-            // Аутентифікація користувача за паролем
             User user = users.Find(u => u.Username == username && u.Password == password);
 
-            // Якщо знайдено користувача, повертаємо true
             return user.Username != null;
         }
     }
