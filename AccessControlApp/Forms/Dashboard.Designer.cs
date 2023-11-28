@@ -115,6 +115,7 @@
             Controls.Add(lstUsers);
             Name = "Dashboard";
             Text = "Dashboard";
+            Load += Dashboard_Load;
             ResumeLayout(false);
             PerformLayout();
         }

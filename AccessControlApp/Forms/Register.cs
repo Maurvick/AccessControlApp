@@ -1,10 +1,12 @@
 using AccessControlApp.Access;
+using AccessControlApp.Services;
 
 namespace AccessControlApp
 {
     public partial class Register : Form
     {
         UserManager manager = new UserManager();
+        UserActivityLogger logger = UserActivityLogger.Instance;
 
         public Register()
         {
@@ -16,12 +18,16 @@ namespace AccessControlApp
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
-            string accessRights = "E"; 
+            string accessLevel = comboAccessLevel.SelectedIndex.ToString();
+            string publicKey = File.ReadAllText("../../../publicKey.xml");
+            string encryptedPassword = RsaIncryptionHelper.Decrypt(password, publicKey);
 
-            manager.RegisterUser(username, password, accessRights);
+            manager.RegisterUser(username, encryptedPassword, accessLevel);
+
+            logger.LogActivity("admin", $"створив користувача {username}");
 
             MessageBox.Show("Користувач зареєстрований!");
-            
+
             Hide();
         }
     }

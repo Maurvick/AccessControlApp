@@ -24,13 +24,19 @@ namespace AccessControlApp.Access
 
         private void lstUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Очистити попередні дані на формі
             lstUsers.Items.Clear();
 
-            // Додати нові дані на форму
             foreach (var user in users)
             {
-                lstUsers.Items.Add($"{user.Username} - {user.AccessRights}");
+                lstUsers.Items.Add($"{user.Username} - {user.AccessLevel}");
+            }
+        }
+
+        private void Dashboard_Load(object sender, EventArgs e)
+        {
+            foreach (var user in users)
+            {
+                lstUsers.Items.Add($"{user.Username} - {user.AccessLevel}");
             }
         }
 

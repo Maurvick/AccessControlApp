@@ -13,7 +13,7 @@ namespace AccessControlApp
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            RsaKeyGenerator.GenerateKeys();
+            RsaIncryptionHelper.GenerateKeys();
             Application.Run(new Login());
         }
     }
