@@ -1,4 +1,4 @@
-using AccessControlApp.Services;
+using AccessControlApp.Forms;
 
 namespace AccessControlApp
 {
@@ -13,8 +13,7 @@ namespace AccessControlApp
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            RsaIncryptionHelper.GenerateKeys();
-            Application.Run(new Login());
+            Application.Run(new MainForm());
         }
     }
 }

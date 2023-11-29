@@ -1,20 +1,22 @@
 ﻿using AccessControlApp.Models;
+using AccessControlApp.Services;
 
 namespace AccessControlApp.Access
 {
     internal class UserManager
     {
-        private List<User>? users;
+        private List<User> users;
+        UserActivityLogger logger = UserActivityLogger.Instance;
 
-        const string usersFilePath = "../../../nameuser.txt";
+        public const string USERS_FILE_PATH = "nameuser.txt";
 
         public void LoadUsers()
         {
             users = new List<User>();
 
-            if (File.Exists(usersFilePath))
+            if (File.Exists(USERS_FILE_PATH))
             {
-                string[] lines = File.ReadAllLines(usersFilePath);
+                string[] lines = File.ReadAllLines(USERS_FILE_PATH);
 
                 foreach (var line in lines)
                 {
@@ -41,19 +43,39 @@ namespace AccessControlApp.Access
                 userLines.Add($"{user.Username},{user.Password},{user.AccessLevel}");
             }
 
-            File.WriteAllLines(usersFilePath, userLines);
+            File.WriteAllLines(USERS_FILE_PATH, userLines);
         }
 
         public void RegisterUser(string username, string password, string AccessLevel)
         {
-            users.Add(new User
+            if (users.Count() == 10)
             {
-                Username = username,
-                Password = password,
-                AccessLevel = AccessLevel
-            });
+                User user = users.Find(u => u.Username == username && u.Password == password);
 
-            SaveUsers();
+                if (user == null)
+                {
+                    users.Add(new User
+                    {
+                        Username = username,
+                        Password = password,
+                        AccessLevel = AccessLevel
+                    });
+
+                    SaveUsers();
+
+                    logger.LogActivity("admin", $"створив користувача {username}");
+
+                    MessageBox.Show("Користувач зареєстрований!");
+                }
+                else
+                {
+                    MessageBox.Show("Такий користувач уже існує!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ліміт користувачів вичепарно.");
+            }
         }
 
         public bool AuthenticateUser(string username, string password)
@@ -63,22 +85,9 @@ namespace AccessControlApp.Access
             return user.Username != null;
         }
 
-        public string ReadUserPasswordFromFile(string username)
+        public void UserAccessValidationTimer()
         {
-            // Read the encrypted password from the file based on the username
-            string[] lines = File.ReadAllLines("../../../nameuser.txt");
 
-            foreach (string line in lines)
-            {
-                string[] parts = line.Split(',');
-
-                if (parts.Length == 3 && parts[0] == username)
-                {
-                    return parts[1]; // Return the encrypted password
-                }
-            }
-
-            return null; // User not found
         }
     }
 }

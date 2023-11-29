@@ -1,17 +1,14 @@
 using AccessControlApp.Access;
-using AccessControlApp.Models;
 using AccessControlApp.Services;
 
 namespace AccessControlApp
 {
-    public partial class Login : Form
+    public partial class LoginForm : Form
     {
-        private List<User>? users;
-
         UserManager manager = new UserManager();
         UserActivityLogger logger = UserActivityLogger.Instance;
 
-        public Login()
+        public LoginForm()
         {
             InitializeComponent();
             manager.LoadUsers();
@@ -21,20 +18,19 @@ namespace AccessControlApp
         {
             string username = txtUsername.Text;
             string password = txtPassword.Text;
-            string privateKey = File.ReadAllText("../../../privateKey.xml");
-            string usernamePassword = manager.ReadUserPasswordFromFile(username);
+            string encryptedPassword = ReadUserPasswordFromFile(username);
 
-            if (usernamePassword != null)
+            if (encryptedPassword != null)
             {
                 // Decrypt the stored encrypted password
-                string decryptedPassword = RsaIncryptionHelper.Decrypt(usernamePassword, privateKey);
+                string decryptedPassword = RSAIncryptionHelper.Decrypt(encryptedPassword);
 
                 // Compare the decrypted password with the entered password
                 if (password == decryptedPassword)
                 {
                     logger.LogActivity(username, "авторизувався в додатку");
                     MessageBox.Show("Login successful!");
-                    Dashboard dashboard = new Dashboard();
+                    ControlPanelForm dashboard = new ControlPanelForm();
                     dashboard.Show();
                     Hide();
                 }
@@ -47,6 +43,25 @@ namespace AccessControlApp
             {
                 MessageBox.Show("User not found.");
             }
+        }
+
+        public string ReadUserPasswordFromFile(string username)
+        {
+            // Read the encrypted password from the file based on the username
+            string[] lines = File.ReadAllLines(UserManager.USERS_FILE_PATH);
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(',');
+
+                if (parts.Length == 3 && parts[0] == username)
+                {
+                    // Return the encrypted password
+                    return parts[1]; 
+                }
+            }
+
+            return null;
         }
     }
 }

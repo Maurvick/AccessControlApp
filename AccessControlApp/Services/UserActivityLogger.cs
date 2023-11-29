@@ -9,7 +9,7 @@
         private UserActivityLogger()
         {
             // Specify the path for the log file
-            logFilePath = "../../Logs/log.txt";
+            logFilePath = "./Logs/us_book.txt";
         }
 
         public static UserActivityLogger Instance

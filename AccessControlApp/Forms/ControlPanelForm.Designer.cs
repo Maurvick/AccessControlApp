@@ -1,6 +1,6 @@
 ﻿namespace AccessControlApp.Access
 {
-    partial class Dashboard
+    partial class ControlPanelForm
     {
         /// <summary>
         /// Required designer variable.
@@ -34,23 +34,24 @@
             btnGrantAccess = new Button();
             lblUserSettings = new Label();
             lblUserList = new Label();
-            button1 = new Button();
+            btnUserLog = new Button();
+            btnReturn = new Button();
             SuspendLayout();
             // 
             // lstUsers
             // 
-            lstUsers.Location = new Point(15, 32);
+            lstUsers.Location = new Point(392, 117);
             lstUsers.Name = "lstUsers";
-            lstUsers.Size = new Size(241, 406);
+            lstUsers.Size = new Size(380, 259);
             lstUsers.TabIndex = 0;
             lstUsers.UseCompatibleStateImageBehavior = false;
             lstUsers.SelectedIndexChanged += lstUsers_SelectedIndexChanged;
             // 
             // btnRegister
             // 
-            btnRegister.Location = new Point(534, 84);
+            btnRegister.Location = new Point(12, 117);
             btnRegister.Name = "btnRegister";
-            btnRegister.Size = new Size(147, 29);
+            btnRegister.Size = new Size(166, 47);
             btnRegister.TabIndex = 1;
             btnRegister.Text = "Register";
             btnRegister.UseVisualStyleBackColor = true;
@@ -58,18 +59,18 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(534, 119);
+            btnDelete.Location = new Point(12, 170);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(147, 29);
+            btnDelete.Size = new Size(166, 47);
             btnDelete.TabIndex = 2;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
             // 
             // btnGrantAccess
             // 
-            btnGrantAccess.Location = new Point(534, 154);
+            btnGrantAccess.Location = new Point(12, 276);
             btnGrantAccess.Name = "btnGrantAccess";
-            btnGrantAccess.Size = new Size(147, 29);
+            btnGrantAccess.Size = new Size(166, 47);
             btnGrantAccess.TabIndex = 3;
             btnGrantAccess.Text = "Grant access";
             btnGrantAccess.UseVisualStyleBackColor = true;
@@ -77,7 +78,7 @@
             // lblUserSettings
             // 
             lblUserSettings.AutoSize = true;
-            lblUserSettings.Location = new Point(535, 53);
+            lblUserSettings.Location = new Point(12, 94);
             lblUserSettings.Name = "lblUserSettings";
             lblUserSettings.Size = new Size(93, 20);
             lblUserSettings.TabIndex = 4;
@@ -86,35 +87,46 @@
             // lblUserList
             // 
             lblUserList.AutoSize = true;
-            lblUserList.Location = new Point(15, 9);
+            lblUserList.Location = new Point(392, 94);
             lblUserList.Name = "lblUserList";
             lblUserList.Size = new Size(61, 20);
             lblUserList.TabIndex = 5;
             lblUserList.Text = "User list";
             // 
-            // button1
+            // btnUserLog
             // 
-            button1.Location = new Point(534, 189);
-            button1.Name = "button1";
-            button1.Size = new Size(147, 29);
-            button1.TabIndex = 6;
-            button1.Text = "Journal";
-            button1.UseVisualStyleBackColor = true;
+            btnUserLog.Location = new Point(12, 223);
+            btnUserLog.Name = "btnUserLog";
+            btnUserLog.Size = new Size(166, 47);
+            btnUserLog.TabIndex = 6;
+            btnUserLog.Text = "User Log";
+            btnUserLog.UseVisualStyleBackColor = true;
             // 
-            // Dashboard
+            // btnReturn
+            // 
+            btnReturn.Location = new Point(12, 377);
+            btnReturn.Name = "btnReturn";
+            btnReturn.Size = new Size(166, 47);
+            btnReturn.TabIndex = 7;
+            btnReturn.Text = "Return";
+            btnReturn.UseVisualStyleBackColor = true;
+            btnReturn.Click += btnReturn_Click;
+            // 
+            // ControlPanelForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button1);
+            Controls.Add(btnReturn);
+            Controls.Add(btnUserLog);
             Controls.Add(lblUserList);
             Controls.Add(lblUserSettings);
             Controls.Add(btnGrantAccess);
             Controls.Add(btnDelete);
             Controls.Add(btnRegister);
             Controls.Add(lstUsers);
-            Name = "Dashboard";
-            Text = "Dashboard";
+            Name = "ControlPanelForm";
+            Text = "ControlPanel";
             Load += Dashboard_Load;
             ResumeLayout(false);
             PerformLayout();
@@ -128,6 +140,7 @@
         private Button btnGrantAccess;
         private Label lblUserSettings;
         private Label lblUserList;
-        private Button button1;
+        private Button btnUserLog;
+        private Button btnReturn;
     }
 }

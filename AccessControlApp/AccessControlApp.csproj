@@ -9,13 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\Register.cs">
+    <Compile Update="Forms\RegisterForm.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logs\" />
+    <None Update="Logs\nameuser.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Logs\us_book.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

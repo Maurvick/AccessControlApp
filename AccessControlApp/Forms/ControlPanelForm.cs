@@ -1,23 +1,24 @@
-﻿using AccessControlApp.Models;
+﻿using AccessControlApp.Forms;
+using AccessControlApp.Models;
 
 namespace AccessControlApp.Access
 {
-    public partial class Dashboard : Form
+    public partial class ControlPanelForm : Form
     {
-        private const string usersFilePath = "nameuser.txt";
-        private const string logFilePath = "us_book.txt";
-        private List<User>? users;
-
         UserManager manager = new UserManager();
+        private const string USERS_FILE_PATH = "nameuser.txt";
 
-        public Dashboard()
+        private List<User> users;
+
+        public ControlPanelForm()
         {
             InitializeComponent();
+            manager.LoadUsers();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            Register register = new Register();
+            RegisterForm register = new RegisterForm();
 
             register.Show();
         }
@@ -28,16 +29,46 @@ namespace AccessControlApp.Access
 
             foreach (var user in users)
             {
-                lstUsers.Items.Add($"{user.Username} - {user.AccessLevel}");
+                lstUsers.Items.Add(user.Username);
             }
         }
 
         private void Dashboard_Load(object sender, EventArgs e)
         {
+            users = new List<User>();
+
+            if (File.Exists(USERS_FILE_PATH))
+            {
+                string[] lines = File.ReadAllLines(USERS_FILE_PATH);
+
+                foreach (var line in lines)
+                {
+                    string[] userParts = line.Split(',');
+                    if (userParts.Length == 3)
+                    {
+                        users.Add(new User
+                        {
+                            Username = userParts[0],
+                            Password = userParts[1],
+                            AccessLevel = userParts[2]
+                        });
+                    }
+                }
+            }
+
             foreach (var user in users)
             {
-                lstUsers.Items.Add($"{user.Username} - {user.AccessLevel}");
+                lstUsers.Items.Add(user.Username);
             }
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+            MainForm main = new MainForm();
+
+            main.Show();
+
+            Hide();
         }
 
         //private string PromptForCredentials()
