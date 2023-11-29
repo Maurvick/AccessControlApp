@@ -31,7 +31,7 @@ namespace AccessControlApp.Services
             }
         }
 
-        public static string Decrypt(string encryptedData, string privateKey)
+        public string Decrypt(string encryptedText)
         {
             byte[] encryptedBytes = Convert.FromBase64String(encryptedData);
 
