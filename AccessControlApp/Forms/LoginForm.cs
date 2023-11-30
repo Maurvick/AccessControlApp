@@ -1,17 +1,14 @@
 using AccessControlApp.Access;
-using AccessControlApp.Services;
 
 namespace AccessControlApp
 {
     public partial class LoginForm : Form
     {
-        UserManager manager = new UserManager();
-        UserActivityLogger logger = UserActivityLogger.Instance;
+        UserManager userManager = new UserManager();
 
         public LoginForm()
         {
             InitializeComponent();
-            manager.LoadUsers();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -20,29 +17,9 @@ namespace AccessControlApp
             string password = txtPassword.Text;
             string encryptedPassword = ReadUserPasswordFromFile(username);
 
-            if (encryptedPassword != null)
-            {
-                // Decrypt the stored encrypted password
-                string decryptedPassword = RSAIncryptionHelper.Decrypt(encryptedPassword);
+            userManager.LoginUser(username, password, encryptedPassword);
 
-                // Compare the decrypted password with the entered password
-                if (password == decryptedPassword)
-                {
-                    logger.LogActivity(username, "авторизувався в додатку");
-                    MessageBox.Show("Login successful!");
-                    ControlPanelForm dashboard = new ControlPanelForm();
-                    dashboard.Show();
-                    Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Invalid username or password.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("User not found.");
-            }
+            Hide();
         }
 
         public string ReadUserPasswordFromFile(string username)
@@ -57,11 +34,13 @@ namespace AccessControlApp
                 if (parts.Length == 3 && parts[0] == username)
                 {
                     // Return the encrypted password
-                    return parts[1]; 
+                    return parts[1];
                 }
             }
 
-            return null;
+            // Return an empty string or throw an exception, depending on your application logic
+            // or throw new InvalidOperationException("Username not found");
+            return string.Empty; 
         }
     }
 }

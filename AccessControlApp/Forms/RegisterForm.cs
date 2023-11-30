@@ -1,5 +1,4 @@
 using AccessControlApp.Access;
-using AccessControlApp.Services;
 
 namespace AccessControlApp
 {
@@ -21,10 +20,7 @@ namespace AccessControlApp
             string password = txtPassword.Text;
             string accessLevel = comboAccessLevel.Text;
 
-           // Encrypt the password
-            var encryptedPassword = RSAIncryptionHelper.Encrypt(password);
-
-            manager.RegisterUser(username, encryptedPassword, accessLevel);
+            manager.RegisterUser(username, password, accessLevel);
 
             Hide();
         }

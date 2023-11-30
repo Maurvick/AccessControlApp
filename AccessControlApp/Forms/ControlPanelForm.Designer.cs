@@ -45,7 +45,6 @@
             lstUsers.Size = new Size(380, 259);
             lstUsers.TabIndex = 0;
             lstUsers.UseCompatibleStateImageBehavior = false;
-            lstUsers.SelectedIndexChanged += lstUsers_SelectedIndexChanged;
             // 
             // btnRegister
             // 

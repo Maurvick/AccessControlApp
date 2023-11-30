@@ -5,12 +5,27 @@ namespace AccessControlApp.Access
 {
     internal class UserManager
     {
-        private List<User> users;
-        UserActivityLogger logger = UserActivityLogger.Instance;
+        public const string USERS_FILE_PATH = "./Logs/nameuser.txt";
 
-        public const string USERS_FILE_PATH = "nameuser.txt";
+        // Initialize the list to avoid CS8618 warning
+        private List<User> users = new List<User>();
 
-        public void LoadUsers()
+        UserActivityLogger _logger = UserActivityLogger.Instance;
+
+        public List<User> Users
+        {
+            get
+            { 
+                return users; 
+            }
+            set 
+            { 
+                users = Users;
+            }
+        }
+
+
+        public void ReadUsersFromTextFile()
         {
             users = new List<User>();
 
@@ -34,7 +49,7 @@ namespace AccessControlApp.Access
             }
         }
 
-        public void SaveUsers()
+        public void SaveUsersToTextFile()
         {
             List<string> userLines = new List<string>();
 
@@ -48,28 +63,34 @@ namespace AccessControlApp.Access
 
         public void RegisterUser(string username, string password, string AccessLevel)
         {
-            if (users.Count() == 10)
-            {
-                User user = users.Find(u => u.Username == username && u.Password == password);
+            ReadUsersFromTextFile();
 
-                if (user == null)
+            List<string> userLines = new List<string>();
+
+            string encryptedPassword = RSAIncryptionHelper.Encrypt(password);
+
+            int userCount = 0;
+
+            if (userCount <= 10)
+            {
+                if (users.Exists(u => u.Username == username))
+                {
+                    MessageBox.Show("Такий користувач уже існує!");
+                }
+                else
                 {
                     users.Add(new User
                     {
                         Username = username,
-                        Password = password,
+                        Password = encryptedPassword,
                         AccessLevel = AccessLevel
                     });
 
-                    SaveUsers();
+                    SaveUsersToTextFile();
 
-                    logger.LogActivity("admin", $"створив користувача {username}");
+                    _logger.LogActivity("admin", $"створив користувача {username}");
 
                     MessageBox.Show("Користувач зареєстрований!");
-                }
-                else
-                {
-                    MessageBox.Show("Такий користувач уже існує!");
                 }
             }
             else
@@ -78,11 +99,42 @@ namespace AccessControlApp.Access
             }
         }
 
+        public void LoginUser(string username, string password, string encryptedPassword)
+        {
+            ReadUsersFromTextFile();
+
+            if (encryptedPassword != null)
+            {
+                // Decrypt the stored encrypted password
+                string decryptedPassword = RSAIncryptionHelper.Decrypt(encryptedPassword);
+
+                // Compare the decrypted password with the entered password
+                if (password == decryptedPassword)
+                {
+                    _logger.LogActivity(username, "авторизувався в додатку");
+                    MessageBox.Show("Успішна авторизація в систему!");
+                    ControlPanelForm dashboard = new ControlPanelForm();
+                    dashboard.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Неправильний пароль або ім'я.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Такого користувача не існує.");
+            }
+
+            SaveUsersToTextFile();
+        }
+
         public bool AuthenticateUser(string username, string password)
         {
-            User user = users.Find(u => u.Username == username && u.Password == password);
+            var user = users.Find(u => u.Username == username && u.Password == password);
 
-            return user.Username != null;
+            // Check if user is not null before accessing properties
+            return user != null;
         }
 
         public void UserAccessValidationTimer()

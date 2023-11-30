@@ -5,13 +5,10 @@ namespace AccessControlApp.Forms
 {
     public partial class MainForm : Form
     {
-        UserManager manager = new UserManager();
-
         public MainForm()
         {
             InitializeComponent();
             RSAIncryptionHelper.ReadKeys();
-            manager.LoadUsers();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)

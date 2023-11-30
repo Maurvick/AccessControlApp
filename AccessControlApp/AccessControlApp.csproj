@@ -15,12 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Logs\nameuser.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Logs\us_book.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <PackageReference Include="Microsoft.VisualStudio.OLE.Interop" Version="17.8.37221" />
   </ItemGroup>
 
 </Project>
